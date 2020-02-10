@@ -99,7 +99,7 @@ class FictionBot:
         		f.write(self.bookTitle + '\n\n')
         	f.write(wp.downloadFromPage(wp.rootUrl+chList[i]['href']))
         	#print(chList[i]['title'])
-        	sys.stdout.write(str((i - lastTimeLength)*100.0/(currentLength-lastTimeLength - 1)) +' % ' + chList[i]['title'] + '\r')
+        	sys.stdout.write(str(int((i - lastTimeLength)*100.0/(currentLength-lastTimeLength - 1))) +' % ' + chList[i]['title'] + '\r')
         	sys.stdout.flush()
         sys.stdout.write('\n\n 下载完成：' + self.bookTitle  + '\n\n')
         f.close()

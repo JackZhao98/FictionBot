@@ -58,7 +58,7 @@ def downloadFromPage(pageUrl):
     html = getPageSource(pageUrl)
     titleReg = re.compile(r'<h1>(.*?)</h1>')
     contentReg = re.compile(r'<div id="content">(.*?)</div>')
-    cleanReg = re.compile(r'&nbsp;&nbsp;')
+    cleanReg = re.compile(r'&nbsp;')
 
     content = re.findall(contentReg, html.text)[0]
     content = re.sub(cleanReg, " ", content)
