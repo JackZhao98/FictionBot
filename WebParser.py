@@ -65,4 +65,4 @@ def downloadFromPage(pageUrl):
     content = content.replace('<br>', '\n')
     title   = re.findall(titleReg, html.text)[0]
 
-    return title + "\n\n" + content + '\n'
+    return title + "\n\n" + content + '\n\n'
