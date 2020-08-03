@@ -16,11 +16,14 @@ class FictionBot:
     bookTitle = None
     path = None
 
-    def __init__(self, bookTitle = None):
+    def __init__(self, bookTitle = None, url = None):
         if bookTitle:
             self.url, self.bookTitle = wp.searchBook(bookTitle)
-        self.bookTitle.replace(' ', '')
-        self.url = wp.rootUrl + self.url
+            self.bookTitle.replace(' ', '')
+            self.url = wp.rootUrl + self.url
+        elif url:
+            self.bookTitle = "untitled"
+            self.url = url
 
     def setUrl(self, url):
         if 'html' in url:
@@ -121,6 +124,8 @@ def main():
                       help = "Set receiver email address")
     parser.add_option("-u", "--url", action = "store", dest = "fictionURL",
                       help = "Set download URL")
+    parser.add_option("-s", "--send", action = "store", dest = "send",
+                      help = "Send local file to email")
     
     options, args = parser.parse_args(sys.argv[1:])
 
@@ -128,6 +133,7 @@ def main():
     lastNchapter = options.lastNchapter
     receiver = options.receiver
     url = options.fictionURL
+    send = options.send
 
     if bookName is None and url is None:
         print("At least one input required!")
@@ -140,13 +146,15 @@ def main():
         fictionBot = FictionBot(bookName)
 
     if url:
-        fictionBot.setUrl(url)
+        fictionBot = FictionBot(url = url)
 
     if lastNchapter:
         book, localPath = fictionBot.download(lastNchapter)
     else:
         book, localPath = fictionBot.download()
 
+    if send:
+        MailDelegate.sendEmail(Auth.login, Auth.passwd, receiver, localPath, "text.txt")
     if receiver:
         MailDelegate.sendEmail(Auth.login, Auth.passwd, receiver, localPath, book)
 
